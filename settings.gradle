@@ -1,0 +1,3 @@
+include ':app'
+include ':wms-table'
+rootProject.name = "arpa-wms-table"

@@ -1,0 +1,84 @@
+apply plugin: 'maven'
+
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            repository(url: "${mvnRepo}") {
+                authentication(userName: "${mvnUser}", password: "${mvnPass}")
+            }
+            snapshotRepository(url: "${mvnRepoSnap}") {
+                authentication(userName: "${mvnUser}", password: "${mvnPass}")
+            }
+            pom.project {
+                version getVersionName()
+                artifactId "${pomArtifactId}"
+                groupId "${mvnGroupId}"
+                packaging "${pomPackage}"
+                description "${pomDesc}"
+            }
+        }
+    }
+}
+
+task androidJavadocs(type: Javadoc) {
+    source = android.sourceSets.main.java.srcDirs
+    classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
+    failOnError false// 忽略错误配置
+}
+
+task androidJavadocsJar(type: Jar, dependsOn: androidJavadocs) {
+    classifier = 'javadoc'
+    from androidJavadocs.destinationDir
+}
+
+task androidSourcesJar(type: Jar) {
+    classifier = 'sources'
+    from android.sourceSets.main.java.srcDirs
+}
+
+task javadoc(type: Javadoc) {
+    options.encoding "UTF-8"
+    options.charSet 'UTF-8'
+}
+
+artifacts {
+    archives androidSourcesJar
+    archives androidJavadocsJar
+}
+
+def getVersionName() {
+    def pomFile = file("gradle.properties")
+    def pomConfig = new Properties()
+    pomConfig.load(new InputStreamReader(new FileInputStream(pomFile), "utf-8"))
+
+    def oldVersionName = pomConfig['pomVersion'].toString()
+    def isSnap = pomConfig['pomSnapshot'].toBoolean()
+    def versions = oldVersionName.split("\\.")
+    def one = versions[0].toInteger()
+    def two = versions[1].toInteger()
+    def three = versions[2].toInteger()
+
+    if (three + 1 == 100) {
+        two += 1
+        three = 0
+    } else {
+        three += 1
+    }
+
+    if (two == 10) {
+        one += 1
+        two = 0
+    }
+
+    def newVersionName = one + "." + two + "." + three
+    def runTasks = gradle.startParameter.taskNames
+    if ('uploadArchives' in runTasks) {
+        pomConfig['pomVersion'] = newVersionName
+        pomConfig.store(pomFile.newWriter(), null)
+    }
+
+    if (isSnap) {
+        newVersionName += "-SNAPSHOT"
+    }
+    return newVersionName
+}

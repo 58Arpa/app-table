@@ -1,0 +1,13 @@
+//Arch
+def arch_version = [:]
+arch_version.versionCode = 1
+arch_version.versionName = "1.0.0"
+ext.arch_version = arch_version
+
+//build version
+def build_versions = [:]
+build_versions.minSdk = 24
+build_versions.targetSdk = 30
+build_versions.compileSdk = 30
+build_versions.buildTools = "30.0.3"
+ext.build_versions = build_versions
