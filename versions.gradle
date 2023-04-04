@@ -8,6 +8,5 @@ ext.arch_version = arch_version
 def build_versions = [:]
 build_versions.minSdk = 24
 build_versions.targetSdk = 30
-build_versions.compileSdk = 30
-build_versions.buildTools = "30.0.3"
+build_versions.compileSdk = 31
 ext.build_versions = build_versions

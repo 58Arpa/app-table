@@ -1,4 +1,4 @@
-package com.arpa.and.appupdate;
+package com.arpa.and.table;
 
 import org.junit.Test;
 
