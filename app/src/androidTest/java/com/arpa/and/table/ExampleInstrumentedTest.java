@@ -1,4 +1,4 @@
-package com.arpa.and.appupdate;
+package com.arpa.and.table;
 
 import android.content.Context;
 
@@ -21,6 +21,6 @@ public class ExampleInstrumentedTest {
     public void useAppContext() {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
-        assertEquals("com.arpa.and.appupdate", appContext.getPackageName());
+        assertEquals("com.arpa.and.table", appContext.getPackageName());
     }
 }

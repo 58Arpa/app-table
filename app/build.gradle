@@ -7,7 +7,7 @@ android {
     buildToolsVersion build_versions.buildTools
 
     defaultConfig {
-        applicationId "com.arpa.and.appupdate"
+        applicationId "com.arpa.and.table"
         minSdkVersion build_versions.minSdk
         targetSdkVersion build_versions.targetSdk
         versionCode 1
